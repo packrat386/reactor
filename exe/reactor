@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'reactor'
+
+issue_url = ARGV.pop
+token = ARGV.pop
+
+Reactor::Client.new(token: token).react(issue_url: issue_url)
+puts 'Comment created!'
