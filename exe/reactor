@@ -1,9 +1,28 @@
 #!/usr/bin/env ruby
 
 require 'reactor'
+require 'optparse'
+
+config = "#{ENV['HOME']}/.reactor.yml"
+message = ':+1:'
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: reactor ISSUE_URL [options]'
+
+  opts.on('-c', '--config PATH', 'Path to config, defaults to ~/.reactor.yml') do |c|
+    config = c
+  end
+
+  opts.on('-m', '--message MESSAGE', 'Path to message, defaults to ":+1:"') do |m|
+    message = m
+  end
+
+  opts.on('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
+end.parse!
 
 issue_url = ARGV.pop
-token = ARGV.pop
-
-Reactor::Client.new(token: token).react(issue_url: issue_url)
+Reactor::Client.new(config: config).react(issue_url: issue_url, message: message)
 puts 'Comment created!'
